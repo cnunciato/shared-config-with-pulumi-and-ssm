@@ -1,0 +1,64 @@
+name: my-website
+runtime: yaml
+
+variables:
+
+  # Get the names of the parameters we care about from the shared-config stack.
+  motd_param_ref:
+    Fn::StackReference:
+      - cnunciato/shared-config/dev  # <-- Change this.
+      - motd_param_name
+  motd_secret_param_ref:
+    Fn::StackReference:
+      - cnunciato/shared-config/dev  # <-- And this.
+      - motd_secret_param_name
+
+  # Fetch (and decrypt) their values from Systems Manager.
+  motd_param:
+    Fn::Invoke:
+      Function: aws:ssm:getParameter
+      Arguments:
+        name: ${motd_param_ref}
+  motd_secret_param:
+    Fn::Invoke:
+      Function: aws:ssm:getParameter
+      Arguments:
+        name: ${motd_secret_param_ref}
+        withDecryption: true
+
+resources:
+
+  # Create an S3 bucket and configure it as a website.
+  my-bucket:
+    type: aws:s3:Bucket
+    properties:
+      website:
+        indexDocument: index.html
+
+  # Create a homepage and render the values.
+  index.html:
+    type: aws:s3:BucketObject
+    properties:
+      bucket: ${my-bucket}
+      acl: public-read
+      contentType: text/html
+      content: |
+        <html>
+          <head>
+            <meta charset="utf-8">
+            <style>
+              span { display: none; }
+              button:active + span { display: inline; }
+            </style>
+          </head>
+          <body>
+            <h1>${motd_param.value}</h1>
+            <button>Reveal the secret message!</button>
+            <span>${motd_secret_param.value}</span>
+          </body>
+        </html>
+
+outputs:
+
+  # Export the publicly accessible URL of the website.
+  url: http://${my-bucket.websiteEndpoint}
