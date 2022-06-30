@@ -1,6 +1,6 @@
 # shared-config-with-pulumi-and-ssm
 
-An example of using [Pulumi](https://pulumi.com/) with [AWS Systems Manager](https://aws.amazon.com/systems-manager/) to share Pulumi-managed configuration across multiple stacks.
+An example of using [Pulumi](https://pulumi.com/) with [AWS Systems Manager](https://aws.amazon.com/systems-manager/) to share Pulumi-managed configuration across multiple stacks. Written to accompany the blog post at https://pulumi.com/blog/shared-config-with-aws-systems-manager-parameter-store.
 
 You'll find three Pulumi projects in this repository:
 
