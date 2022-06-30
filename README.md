@@ -1,6 +1,6 @@
 # shared-config-with-pulumi-and-ssm
 
-An example of using [Pulumi](https://pulumi.com/) with [AWS Systems Manager](https://aws.amazon.com/systems-manager/) to share Pulumi-managed configuration across multiple stacks. Written to accompany the blog post at https://pulumi.com/blog/shared-config-with-aws-systems-manager-parameter-store.
+An example of using [Pulumi](https://pulumi.com/) with [AWS Systems Manager](https://aws.amazon.com/systems-manager/) to share Pulumi-managed configuration across multiple stacks. 
 
 You'll find three Pulumi projects in this repository:
 
@@ -9,6 +9,8 @@ You'll find three Pulumi projects in this repository:
 * `my-website` is a Pulumi YAML project that uses Pulumi stack references to get the names of the parameters from `shared-config`, fetch their values from Parameter Store, and use them to render a static web page.
 
 * `my-service` is a Pulumi TypeScript project that operates similarly, but instead uses an AWS Lambda function to read the values from Parameter Store on demand.
+
+[See the blog post on pulumi.com](https://pulumi.com/blog/shared-config-with-aws-systems-manager-parameter-store) for a complete walkthrough.
 
 ## Installing
 
